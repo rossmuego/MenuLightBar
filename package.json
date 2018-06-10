@@ -1,0 +1,27 @@
+{
+  "name": "menulightbar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rossmuego/menuLightBar.git"
+  },
+  "author": "Ross Muego",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rossmuego/menuLightBar/issues"
+  },
+  "homepage": "https://github.com/rossmuego/menuLightBar#readme",
+  "devDependencies": {
+    "electron": "^2.0.2"
+  },
+  "dependencies": {
+    "electron-store": "^2.0.0",
+    "node-fetch": "^2.1.2"
+  }
+}
