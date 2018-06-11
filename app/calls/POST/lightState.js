@@ -1,8 +1,8 @@
 const fetch = require('node-fetch');
-const updateLights = require('../GET/lights');
 const { Menu } = require('electron');
+const updateTray = require('../../utilis/updateTray')
 
-module.exports = async (id, store, menu, tray) => {
+module.exports = async (id, store, tray) => {
   console.log('in POSTlights');
 
   try {
@@ -10,15 +10,17 @@ module.exports = async (id, store, menu, tray) => {
     const username = store.get('username')
 
     const menu = Menu.getApplicationMenu()
-    const state = menu.items[0].submenu.items[id-1].checked
+    const state = menu.items[0].submenu.items[id-1].checked;
+    menu.items[0].submenu.items[id-1].checked = !state
+    Menu.setApplicationMenu(menu);
 
     const endpoint = `http://${bridgeip}/api/${username}/lights/${id}/state`;
     const response = await fetch(endpoint, {
         method: 'PUT', body: `{"on":${!state}}`
     });
 
-    menu.items[0].submenu.items[id-1].checked = !state
-    Menu.setApplicationMenu(menu);
+    updateTray(store, tray);
+
 
 } catch (err) {
     throw new Error(`Error fetching GETlights: ${err}`);
