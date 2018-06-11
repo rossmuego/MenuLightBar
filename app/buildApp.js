@@ -8,7 +8,7 @@ const imagesDir = path.join(__dirname, './images');
 const allLights = require('./calls/POST/allLightState');
 const getScenes = require('./calls/GET/scenes')
 
-module.exports = async (store, tray) => {
+const buildApp = async (store, tray) => {
   console.log('in buildApp');
 
   const username = store.get('username');
@@ -95,4 +95,9 @@ module.exports = async (store, tray) => {
   tray.setContextMenu(appMenu);
 
   console.log('app built!');
+};
+
+module.exports = async (store, tray) => {
+  buildApp(store, tray);
+  setInterval(buildApp, 30000, store, tray);
 };

@@ -4,6 +4,7 @@ const {
 const getLights = require('../calls/GET/lights')
 const path = require('path');
 const imagesDir = path.join(__dirname, '../images/');
+const buildApp = require('../buildApp');
 
 module.exports = async (store, tray) => {
     console.log('checking tray image');
@@ -24,4 +25,5 @@ module.exports = async (store, tray) => {
         tray.setImage(`${imagesDir}/icon.png`)
     }
 
+    buildApp(store, tray);
 };
