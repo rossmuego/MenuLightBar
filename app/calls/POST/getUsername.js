@@ -21,6 +21,6 @@ module.exports = async (ipresponse, store, tray) => {
     buildApp(store, tray);
 
   } catch (err) {
-    throw new Error(`Error in getAccessToken: ${err}`);
+    throw new Error(`Error in POSTusername: ${err}`);
   }
 };
