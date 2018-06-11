@@ -2,8 +2,8 @@
 
 A Menubar app for Mac OS, allowing you to controll your Philips Hue Lights from the desktop. 
 
-![scr1]( )
-![sce2]( )
+![](./app/images/img-repo-1.png)
+![](./app/images/img-repo-2.png)
 
 ## Completed 
 
