@@ -16,6 +16,8 @@ A Menubar app for Mac OS, allowing you to controll your Philips Hue Lights from 
 * Download/fork repo
 * cd to folder and run `npm install`
 * Run `npm run start`
+* Press button on Hue Bridge
+* Click to find bridge on the app
 
 ## Still to come
 

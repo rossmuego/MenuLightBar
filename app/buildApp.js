@@ -37,12 +37,11 @@ module.exports = async (store, tray) => {
     tray.setImage(`${imagesDir}/icon-on.png`)
   }
 
-  const appMenu = Menu.buildFromTemplate([
-    {
+  const appMenu = Menu.buildFromTemplate([{
       label: 'On',
       checked: lightsOn,
       type: 'radio',
-      click(){
+      click() {
         allLights(store, tray, totalLights, true)
       }
     },
@@ -50,7 +49,7 @@ module.exports = async (store, tray) => {
       label: 'Off',
       checked: !lightsOn,
       type: 'radio',
-      click(){
+      click() {
         allLights(store, tray, totalLights, false)
       }
     },
