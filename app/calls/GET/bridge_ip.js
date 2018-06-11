@@ -9,11 +9,11 @@ module.exports = async (store, tray) => {
   try {
     const endpoint = 'https://www.meethue.com/api/nupnp';
     const response = await fetch(endpoint);
-    
+
     const jsonResponse = await response.json();
 
     getUsername(jsonResponse, store, tray)
-   
+
   } catch (err) {
     throw new Error(`Error fetching GETBridge: ${err}`);
   }
