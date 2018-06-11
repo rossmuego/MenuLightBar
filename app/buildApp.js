@@ -26,12 +26,12 @@ module.exports = async (store, tray) => {
   for (var light in lights) {
     let i = parseInt(light)
     var curr = lights[light];
+    console.log(curr.name + " " + curr.state.on)
     if (curr.state.on) {
       lightsOn = true;
     }
     lightsMenu.push({
       label: curr.name,
-      id: light,
       type: 'checkbox',
       checked: curr.state.on,
       click() {
