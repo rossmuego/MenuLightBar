@@ -6,6 +6,7 @@ const getLights = require('./calls/GET/lights');
 const changeLightState = require('./calls/POST/lightState');
 const path = require('path');
 const imagesDir = path.join(__dirname, './images');
+const allLights = require('./calls/POST/allLightState');
 
 module.exports = async (store, tray) => {
   console.log('in buildApp');
@@ -16,8 +17,8 @@ module.exports = async (store, tray) => {
   const lights = await getLights(bridgeip, username)
   const lightsMenu = [];
   let lightsOn = false;
-
-  for (let i = 1; i <= Object.keys(lights).length; i++) {
+  const totalLights = Object.keys(lights).length;
+  for (let i = 1; i <= totalLights; i++) {
     if (lights[i].state.on) {
       lightsOn = true;
     }
@@ -36,7 +37,25 @@ module.exports = async (store, tray) => {
     tray.setImage(`${imagesDir}/icon-on.png`)
   }
 
-  const appMenu = Menu.buildFromTemplate([{
+  const appMenu = Menu.buildFromTemplate([
+    {
+      label: 'On',
+      type: 'radio',
+      click(){
+        allLights(store, tray, totalLights, true)
+      }
+    },
+    {
+      label: 'Off',
+      type: 'radio',
+      click(){
+        allLights(store, tray, totalLights, false)
+      }
+    },
+    {
+      type: 'separator'
+    },
+    {
       label: "Lights",
       submenu: lightsMenu
     },

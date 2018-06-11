@@ -19,7 +19,7 @@ module.exports = async (id, store, tray) => {
         const endpoint = `http://${bridgeip}/api/${username}/lights/${id}/state`;
         const response = await fetch(endpoint, {
             method: 'PUT',
-            body: `{"on":${!state}}`
+            body: `{"on":${!state}, "transitiontime":"2"}`,
         });
 
         updateTray(store, tray);

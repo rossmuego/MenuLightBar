@@ -12,7 +12,6 @@ module.exports = async (store, tray) => {
     const username = store.get('username');
     // clear store incase of errors
     const lights = await getLights(bridgeip, username)
-    console.log(lights)
     for (let i = 1; i <= Object.keys(lights).length; i++) {
         if (lights[i].state.on) {
             lightsOn = true;

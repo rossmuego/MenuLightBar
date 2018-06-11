@@ -14,7 +14,7 @@ module.exports = async (ipresponse, store, tray) => {
     );
 
     const jsonResponse = await response.json();
-
+    console.log(jsonResponse.success.username)
     store.set('username', "igsjuyuvRT9rXTm0IJvEhPh2so-4GFo6pR5Vkudj")
     store.set('bridgeip', ipresponse[0].internalipaddress)
 
