@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
 module.exports = async (bridgeip, username) => {
-  console.log('in GETlights');
+  console.log('in GETlightss');
 
   try {
 

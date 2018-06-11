@@ -10,7 +10,6 @@ module.exports = async (id, store, tray) => {
     try {
         const bridgeip = store.get('bridgeip')
         const username = store.get('username')
-
         const menu = Menu.getApplicationMenu()
         const state = menu.items[0].submenu.items[id - 1].checked;
         menu.items[0].submenu.items[id - 1].checked = !state
@@ -19,7 +18,7 @@ module.exports = async (id, store, tray) => {
         const endpoint = `http://${bridgeip}/api/${username}/lights/${id}/state`;
         const response = await fetch(endpoint, {
             method: 'PUT',
-            body: `{"on":${state}, "transitiontime":"2"}`,
+            body: `{"on":${!state}, "transitiontime":"2"}`,
         });
 
         updateTray(store, tray);
