@@ -40,6 +40,7 @@ module.exports = async (store, tray) => {
   const appMenu = Menu.buildFromTemplate([
     {
       label: 'On',
+      checked: lightsOn,
       type: 'radio',
       click(){
         allLights(store, tray, totalLights, true)
@@ -47,6 +48,7 @@ module.exports = async (store, tray) => {
     },
     {
       label: 'Off',
+      checked: !lightsOn,
       type: 'radio',
       click(){
         allLights(store, tray, totalLights, false)

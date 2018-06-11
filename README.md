@@ -21,3 +21,4 @@ A Menubar app for Mac OS, allowing you to controll your Philips Hue Lights from 
 
 * Change scenes
 * Potentially change brightness/colour etc
+* Bug fixes
