@@ -10,7 +10,6 @@ module.exports = async (id, store, tray) => {
     try {
         const bridgeip = store.get('bridgeip')
         const username = store.get('username')
-
         const menu = Menu.getApplicationMenu()
         const state = menu.items[0].submenu.items[id - 1].checked;
         menu.items[0].submenu.items[id - 1].checked = !state

@@ -22,15 +22,18 @@ module.exports = async (store, tray) => {
   let lightsOn = false;
   const totalLights = Object.keys(lights).length;
   const totalScenes = Object.keys(scenes).length
-  for (let i = 1; i <= totalLights; i++) {
-    if (lights[i].state.on) {
+
+  for (var light in lights) {
+    let i = parseInt(light)
+    var curr = lights[light];
+    if (curr.state.on) {
       lightsOn = true;
     }
     lightsMenu.push({
-      label: lights[i].name,
-      id: 'light_' + i,
+      label: curr.name,
+      id: light,
       type: 'checkbox',
-      checked: lights[i].state.on,
+      checked: curr.state.on,
       click() {
         changeLightState(i, store, tray);
       }
