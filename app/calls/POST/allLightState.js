@@ -19,6 +19,9 @@ module.exports = async (store, tray, lightsList, state) => {
                 body: `{"on":${state}, "transitiontime":"2"}`,
             });
         }
+
+        updateTray(store, tray);
+
     } catch (err) {
         throw new Error(`Error fetching POSTlights: ${err}`);
     }

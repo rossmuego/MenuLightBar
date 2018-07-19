@@ -6,7 +6,6 @@ const changeLightState = require('./calls/POST/lightState');
 const path = require('path');
 const imagesDir = path.join(__dirname, './images');
 const allLights = require('./calls/POST/allLightState');
-const getScenes = require('./calls/GET/scenes')
 
 const buildApp = async (store, tray) => {
   console.log('in buildApp');

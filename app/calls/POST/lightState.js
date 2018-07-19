@@ -22,7 +22,7 @@ module.exports = async (id, store, tray) => {
             body: `{"on":${!state}, "transitiontime":"2"}`,
         });
 
-        updateTray.update(store, tray);
+        updateTray(store, tray);
 
     } catch (err) {
         throw new Error(`Error fetching GETlights: ${err}`);
