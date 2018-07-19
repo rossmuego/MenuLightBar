@@ -14,7 +14,7 @@ module.exports = async (store, tray) => {
         const username = store.get('username');
         // clear store incase of errors
         const lights = await getLights(bridgeip, username)
-        
+
         for (var light in lights) {
             let i = parseInt(light)
             var curr = lights[light];
@@ -24,9 +24,9 @@ module.exports = async (store, tray) => {
           }
 
         if (lightsOn) {
-            tray.setImage(`${imagesDir}/icon-on.png`)
+            tray.setImage(`${imagesDir}/light-on-logo.png`)
         } else {
-            tray.setImage(`${imagesDir}/icon.png`)
+            tray.setImage(`${imagesDir}/light-off-logo.png`)
         }
 
     } catch (err) {

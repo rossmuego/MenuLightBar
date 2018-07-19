@@ -40,7 +40,7 @@ const buildApp = async (store, tray) => {
 //  console.log(lightsList)
 
   if (lightsOn) {
-    tray.setImage(`${imagesDir}/icon-on.png`)
+    tray.setImage(`${imagesDir}/light-on-logo.png`)
   }
 
   const appMenu = Menu.buildFromTemplate([{
