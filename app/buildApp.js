@@ -14,17 +14,15 @@ const buildApp = async (store, tray) => {
   const username = store.get('username');
   const bridgeip = store.get('bridgeip');
 
-  const scenes = await getScenes(bridgeip, username)
   const lights = await getLights(bridgeip, username)
   const lightsMenu = [];
-  const scenesMenu = [];
 
   let lightsOn = false;
-  const totalLights = Object.keys(lights).length;
-  const totalScenes = Object.keys(scenes).length
+  let lightsList = [];
 
   for (var light in lights) {
     let i = parseInt(light)
+    lightsList.push(i);
     var curr = lights[light];
     if (curr.state.on) {
       lightsOn = true;
@@ -40,26 +38,18 @@ const buildApp = async (store, tray) => {
     })
   }
 
+//  console.log(lightsList)
+
   if (lightsOn) {
     tray.setImage(`${imagesDir}/icon-on.png`)
   }
 
-  for (let i = 1; i <= totalScenes; i++) {
-    scenesMenu.push({
-      label: 'hi',
-      type: 'radio',
-      checked: false,
-      click() {
-        changeLightState(i, store, tray);
-      }
-    })
-  }
   const appMenu = Menu.buildFromTemplate([{
       label: 'On',
       checked: lightsOn,
       type: 'radio',
       click() {
-        allLights(store, tray, totalLights, true)
+        allLights(store, tray, lightsList, true)
       }
     },
     {
@@ -67,7 +57,7 @@ const buildApp = async (store, tray) => {
       checked: !lightsOn,
       type: 'radio',
       click() {
-        allLights(store, tray, totalLights, false)
+        allLights(store, tray, lightsList, false)
       }
     },
     {
@@ -79,10 +69,6 @@ const buildApp = async (store, tray) => {
     },
     {
       type: 'separator'
-    },
-    {
-      label: "Scenes",
-      submenu: scenesMenu
     },
     {
       type: 'separator'

@@ -8,6 +8,7 @@ module.exports = async (id, store, tray) => {
     console.log('in POSTlights');
 
     try {
+       // console.log(id)
         const bridgeip = store.get('bridgeip')
         const username = store.get('username')
         const menu = Menu.getApplicationMenu()
@@ -21,7 +22,7 @@ module.exports = async (id, store, tray) => {
             body: `{"on":${!state}, "transitiontime":"2"}`,
         });
 
-        updateTray(store, tray);
+        updateTray.update(store, tray);
 
     } catch (err) {
         throw new Error(`Error fetching GETlights: ${err}`);

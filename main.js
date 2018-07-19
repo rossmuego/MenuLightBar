@@ -15,7 +15,7 @@ if (process.platform === 'darwin') {
 }
 
 app.on('ready', async () => {
-  // store.clear(); // uncoment to start from scratch
+ // store.clear(); // uncoment to start from scratch
   console.log('starting...');
 
   try {
