@@ -1,11 +1,13 @@
 {
   "name": "menulightbar",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Menubar MacOS application to controll your Philips Hue Light configuration.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "repository": {
     "type": "git",
@@ -18,10 +20,17 @@
   },
   "homepage": "https://github.com/rossmuego/menuLightBar#readme",
   "devDependencies": {
-    "electron": "^2.0.2"
+    "electron": "^2.0.2",
+    "electron-builder": "^20.24.4"
   },
   "dependencies": {
     "electron-store": "^2.0.0",
     "node-fetch": "^2.1.2"
+  },
+  "build": {
+    "appId": "io.rossmuego.menuLightBar",
+    "mac": {
+      "icon": "app/images/main-logo.png"
+    }
   }
 }
