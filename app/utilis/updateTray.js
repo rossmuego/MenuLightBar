@@ -24,8 +24,6 @@ exports.updateTray = async (store, tray) => {
             }
         }
 
-        console.log(lightsOn)
-
         if (lightsOn) {
             tray.setImage(`${imagesDir}/light-on-logo.png`)
         } else {
