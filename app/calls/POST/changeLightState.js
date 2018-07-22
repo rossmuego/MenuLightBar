@@ -2,13 +2,13 @@ const fetch = require('node-fetch');
 const {
     Menu
 } = require('electron');
-const updateTray = require('../../utilis/updateTray')
+var updateTray = require('../../utilis/updateTray')
 
-module.exports = async (id, store, tray) => {
+exports.changeLightState = async (id, store, tray) => {
     console.log('in POSTlights');
 
     try {
-       // console.log(id)
+
         const bridgeip = store.get('bridgeip')
         const username = store.get('username')
         const menu = Menu.getApplicationMenu()
@@ -22,10 +22,10 @@ module.exports = async (id, store, tray) => {
             body: `{"on":${!state}, "transitiontime":"2"}`,
         });
 
-        updateTray(store, tray);
+        updateTray.updateTray(store, tray);
 
     } catch (err) {
-        throw new Error(`Error fetching GETlights: ${err}`);
+        throw new Error(`Error fetching POSTLightState: ${err}`);
     }
 
 };

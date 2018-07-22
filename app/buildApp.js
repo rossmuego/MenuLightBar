@@ -2,7 +2,7 @@ const {
   Menu
 } = require('electron');
 const getLights = require('./calls/GET/lights');
-const changeLightState = require('./calls/POST/lightState');
+const changeLightState = require('./calls/POST/changeLightState');
 const path = require('path');
 const imagesDir = path.join(__dirname, './images');
 const allLights = require('./calls/POST/allLightState');
@@ -32,7 +32,7 @@ const buildApp = async (store, tray) => {
       type: 'checkbox',
       checked: curr.state.on,
       click() {
-        changeLightState(i, store, tray);
+        changeLightState.changeLightState(i, store, tray);
       }
     })
   }
