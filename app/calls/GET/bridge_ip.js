@@ -15,6 +15,6 @@ module.exports = async (store, tray) => {
     getUsername(jsonResponse, store, tray)
 
   } catch (err) {
-    throw new Error(`Error fetching GETBridge: ${err}`);
+    throw new Error(`Error fetching bridgeIP: ${err}`);
   }
 };

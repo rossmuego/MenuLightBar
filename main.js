@@ -1,7 +1,7 @@
 const {
   app,
   Tray
-} = require('electron'); // eslint-disable-line
+} = require('electron');
 const path = require('path');
 const Store = require('electron-store');
 const locateBridge = require('./app/utilis/locateBridge')

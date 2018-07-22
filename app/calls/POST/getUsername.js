@@ -5,7 +5,6 @@ module.exports = async (ipresponse, store, tray) => {
   console.log('in POSTaccessToken');
 
   try {
-
     const response = await fetch(
       "http://" + ipresponse[0].internalipaddress + "/api", {
         method: 'POST',
