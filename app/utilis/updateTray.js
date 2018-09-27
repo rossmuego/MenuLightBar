@@ -3,9 +3,11 @@ const {
 } = require('electron');
 const path = require('path');
 const imagesDir = path.join(__dirname, '../images/');
-const changeLightState = require('../calls/POST/changeLightState')
+const changeLightState = require('../calls/POST/changeLightState');
+const changeScene = require('../calls/POST/changeScene');
 const allLights = require('../calls/POST/allLightState');
-const getLights = require('../calls/GET/lights')
+const getLights = require('../calls/GET/lights');
+const getScenes = require('../calls/GET/scenes');
 
 exports.updateTray = async (store, tray) => {
     try {
@@ -41,11 +43,9 @@ exports.updateTray = async (store, tray) => {
             })
         }
 
-        let iteration = 0;
         for (var scene in scenes) {
             let sceneID = scene;
             var curr = scenes[scene];
-            console.log(curr);
             scenesMenu.push({
                 label: curr.name,
                 type: 'checkbox',
@@ -53,7 +53,6 @@ exports.updateTray = async (store, tray) => {
                     changeScene.changeScene(sceneID, store, tray);
                 }
             })
-            iteration++;
         }
 
 
