@@ -5,7 +5,7 @@ const path = require('path');
 const imagesDir = path.join(__dirname, '../images/');
 const changeLightState = require('../calls/POST/changeLightState')
 const allLights = require('../calls/POST/allLightState');
-const getLights = require('../calls/GET/lights')
+const getLights = require('../calls/GET/lights');
 
 exports.updateTray = async (store, tray) => {
     try {
@@ -23,9 +23,6 @@ exports.updateTray = async (store, tray) => {
                 lightsOn = true;
             }
         }
-
-        console.log(lightsOn)
-
         if (lightsOn) {
             tray.setImage(`${imagesDir}/light-on-logo.png`)
         } else {

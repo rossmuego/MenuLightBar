@@ -6,6 +6,7 @@ const changeLightState = require('./calls/POST/changeLightState');
 const path = require('path');
 const imagesDir = path.join(__dirname, './images');
 const allLights = require('./calls/POST/allLightState');
+const getScenes = require('./calls/GET/scenes');
 
 const buildApp = async (store, tray) => {
   try {
@@ -13,8 +14,8 @@ const buildApp = async (store, tray) => {
 
     const username = store.get('username');
     const bridgeip = store.get('bridgeip');
-
     const lights = await getLights(bridgeip, username)
+    const scenes = await getScenes(bridgeip, username)
     const lightsMenu = [];
 
     let lightsOn = false;
@@ -41,6 +42,17 @@ const buildApp = async (store, tray) => {
     if (lightsOn) {
       tray.setImage(`${imagesDir}/light-on-logo.png`)
     }
+
+      for (let i = 1; i <= totalScenes; i++) {
+    scenesMenu.push({
+      label: 'hi',
+      type: 'radio',
+      checked: false,
+      click() {
+        changeLightState(i, store, tray);
+      }
+    })
+  }
 
     const appMenu = Menu.buildFromTemplate([{
         label: 'On',
