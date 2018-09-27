@@ -9,32 +9,18 @@ const getLights = require('../calls/GET/lights')
 
 exports.updateTray = async (store, tray) => {
     try {
-        console.log('checking tray image');
-        let lightsOn = false;
-        const bridgeip = store.get('bridgeip');
+        console.log('in buildApp');
+
         const username = store.get('username');
+        const bridgeip = store.get('bridgeip');
 
-        const lights = await getLights(bridgeip, username)
-
-        for (var light in lights) {
-            let i = parseInt(light)
-            var curr = lights[light];
-            if (curr.state.on) {
-                lightsOn = true;
-            }
-        }
-
-        if (lightsOn) {
-            tray.setImage(`${imagesDir}/light-on-logo.png`)
-        } else {
-            tray.setImage(`${imagesDir}/light-off-logo.png`)
-        }
-
-        console.log('starting menu rebuild');
-
+        const lights = await getLights(bridgeip, username);
         const lightsMenu = [];
 
-        let indvLightsOn = false;
+        const scenes = await getScenes(bridgeip, username);
+        const scenesMenu = [];
+
+        let lightsOn = false;
         let lightsList = [];
 
         for (var light in lights) {
@@ -42,7 +28,7 @@ exports.updateTray = async (store, tray) => {
             lightsList.push(i);
             var curr = lights[light];
             if (curr.state.on) {
-                indvLightsOn = true;
+                lightsOn = true;
             }
             lightsMenu.push({
                 label: curr.name,
@@ -55,9 +41,29 @@ exports.updateTray = async (store, tray) => {
             })
         }
 
+        let iteration = 0;
+        for (var scene in scenes) {
+            let sceneID = scene;
+            var curr = scenes[scene];
+            console.log(curr);
+            scenesMenu.push({
+                label: curr.name,
+                type: 'checkbox',
+                click() {
+                    changeScene.changeScene(sceneID, store, tray);
+                }
+            })
+            iteration++;
+        }
+
+
+        if (lightsOn) {
+            tray.setImage(`${imagesDir}/light-on-logo.png`)
+        }
+
         const appMenu = Menu.buildFromTemplate([{
                 label: 'On',
-                checked: indvLightsOn,
+                checked: lightsOn,
                 type: 'radio',
                 click() {
                     allLights(store, tray, lightsList, true)
@@ -65,7 +71,7 @@ exports.updateTray = async (store, tray) => {
             },
             {
                 label: 'Off',
-                checked: !indvLightsOn,
+                checked: !lightsOn,
                 type: 'radio',
                 click() {
                     allLights(store, tray, lightsList, false)
@@ -77,6 +83,13 @@ exports.updateTray = async (store, tray) => {
             {
                 label: "Lights",
                 submenu: lightsMenu
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: "Scenes",
+                submenu: scenesMenu
             },
             {
                 type: 'separator'
