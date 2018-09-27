@@ -2,7 +2,9 @@ const {
   Menu
 } = require('electron');
 const getLights = require('./calls/GET/lights');
+const getScenes = require('./calls/GET/scenes');
 const changeLightState = require('./calls/POST/changeLightState');
+const changeScene = require('./calls/POST/changeScene');
 const path = require('path');
 const imagesDir = path.join(__dirname, './images');
 const allLights = require('./calls/POST/allLightState');
@@ -14,8 +16,11 @@ const buildApp = async (store, tray) => {
     const username = store.get('username');
     const bridgeip = store.get('bridgeip');
 
-    const lights = await getLights(bridgeip, username)
+    const lights = await getLights(bridgeip, username);
     const lightsMenu = [];
+
+    const scenes = await getScenes(bridgeip, username);
+    const scenesMenu = [];
 
     let lightsOn = false;
     let lightsList = [];
@@ -37,7 +42,21 @@ const buildApp = async (store, tray) => {
         }
       })
     }
-    
+
+    for (var scene in scenes) {
+      let sceneID = scene;
+      var curr = scenes[scene];
+      console.log(curr);
+      scenesMenu.push({
+        label: curr.name,
+        type: 'radio',
+        click() {
+          changeScene.changeScene(sceneID, store, tray);
+        }
+      })
+    }
+
+
     if (lightsOn) {
       tray.setImage(`${imagesDir}/light-on-logo.png`)
     }
@@ -64,6 +83,13 @@ const buildApp = async (store, tray) => {
       {
         label: "Lights",
         submenu: lightsMenu
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: "Scenes",
+        submenu: scenesMenu
       },
       {
         type: 'separator'
