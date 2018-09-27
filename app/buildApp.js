@@ -46,7 +46,6 @@ const buildApp = async (store, tray) => {
     for (var scene in scenes) {
       let sceneID = scene;
       var curr = scenes[scene];
-      console.log(curr);
       scenesMenu.push({
         label: curr.name,
         type: 'radio',
