@@ -1,4 +1,4 @@
-const { Menu } = require("electron");
+const { Menu, app } = require("electron");
 const getLights = require("./calls/GET/lights");
 const getScenes = require("./calls/GET/scenes");
 const changeLightState = require("./calls/POST/changeLightState");
@@ -6,6 +6,7 @@ const changeScene = require("./calls/POST/changeScene");
 const path = require("path");
 const imagesDir = path.join(__dirname, "./images");
 const allLights = require("./calls/POST/allLightState");
+const update = require("./utilis/updateTray");
 
 const buildApp = async (store, tray) => {
   try {
@@ -26,17 +27,18 @@ const buildApp = async (store, tray) => {
     for (var light in lights) {
       let i = parseInt(light);
       lightsList.push(i);
-      var curr = lights[light];
+      var curr = lights[i];
+      var on = curr.state.on;
       if (curr.state.on) {
         lightsOn = true;
       }
       lightsMenu.push({
         label: curr.name,
-        id: light,
+        id: i,
         type: "checkbox",
         checked: curr.state.on,
         click() {
-          changeLightState.changeLightState(i, store, tray);
+          changeLightState.changeLightState(i, store, tray, on);
         }
       });
     }
@@ -93,6 +95,15 @@ const buildApp = async (store, tray) => {
       },
       {
         type: "separator"
+      },
+      {
+        label: "Options",
+        submenu: [
+          {
+            label: `Version: ${app.getVersion()}`,
+            enabled: false
+          }
+        ]
       },
       {
         label: "Quit",

@@ -9,7 +9,7 @@ const getScenes = require("../calls/GET/scenes");
 
 exports.updateTray = async (store, tray) => {
   try {
-    console.log("in buildApp");
+    console.log("in updateTray");
 
     const username = store.get("username");
     const bridgeip = store.get("bridgeip");
@@ -26,17 +26,19 @@ exports.updateTray = async (store, tray) => {
     for (var light in lights) {
       let i = parseInt(light);
       lightsList.push(i);
-      var curr = lights[light];
+      var curr = lights[i];
+      var on = curr.state.on;
+
       if (curr.state.on) {
         lightsOn = true;
       }
       lightsMenu.push({
         label: curr.name,
-        id: light,
+        id: i,
         type: "checkbox",
         checked: curr.state.on,
         click() {
-          changeLightState.changeLightState(i, store, tray);
+          changeLightState.changeLightState(i, store, tray, on);
         }
       });
     }

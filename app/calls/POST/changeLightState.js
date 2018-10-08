@@ -1,22 +1,17 @@
 const fetch = require("node-fetch");
-const { Menu } = require("electron");
 var updateTray = require("../../utilis/updateTray");
 
-exports.changeLightState = async (id, store, tray) => {
+exports.changeLightState = async (id, store, tray, state) => {
   console.log("in POSTlights");
 
   try {
     const bridgeip = store.get("bridgeip");
     const username = store.get("username");
-    const menu = Menu.getApplicationMenu();
-    const state = menu.items[0].submenu.items[id - 1].checked;
-    menu.items[0].submenu.items[id - 1].checked = !state;
-    Menu.setApplicationMenu(menu);
 
     const endpoint = `http://${bridgeip}/api/${username}/lights/${id}/state`;
     const response = await fetch(endpoint, {
       method: "PUT",
-      body: `{"on":${!state}, "transitiontime":"2"}`
+      body: `{"on": ${!state}}`
     });
 
     updateTray.updateTray(store, tray);
