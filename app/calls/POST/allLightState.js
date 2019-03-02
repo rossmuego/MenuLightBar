@@ -1,8 +1,9 @@
 const fetch = require("node-fetch");
-const { Menu } = require("electron");
-var updateTray = require("../../utilis/updateTray");
+const {
+  Menu
+} = require("electron");
 
-module.exports = async (store, tray, lightsList, state) => {
+module.exports = async (store, lightsList, state, reload) => {
   console.log("in POSTlights");
 
   try {
@@ -17,7 +18,8 @@ module.exports = async (store, tray, lightsList, state) => {
       });
     }
 
-    updateTray.updateTray(store, tray);
+    reload();
+
   } catch (err) {
     throw new Error(`Error fetching POSTAllLights: ${err}`);
   }

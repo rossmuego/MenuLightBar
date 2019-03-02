@@ -1,4 +1,8 @@
-const { Menu, app } = require("electron");
+const {
+  Menu,
+  app
+} = require("electron");
+const Boolify = require('node-boolify').Boolify;
 const getLights = require("./calls/GET/lights");
 const getScenes = require("./calls/GET/scenes");
 const changeLightState = require("./calls/POST/changeLightState");
@@ -6,7 +10,6 @@ const changeScene = require("./calls/POST/changeScene");
 const path = require("path");
 const imagesDir = path.join(__dirname, "./images");
 const allLights = require("./calls/POST/allLightState");
-const update = require("./utilis/updateTray");
 
 const buildApp = async (store, tray) => {
   try {
@@ -25,20 +28,23 @@ const buildApp = async (store, tray) => {
     let lightsList = [];
 
     for (var light in lights) {
-      let i = parseInt(light);
-      lightsList.push(i);
-      var curr = lights[i];
-      var on = curr.state.on;
-      if (curr.state.on) {
+      let lightId = parseInt(light);
+      lightsList.push(lightId);
+      var curr = lights[lightId];
+
+      if (Boolify(curr.state.on)) {
         lightsOn = true;
       }
+
       lightsMenu.push({
         label: curr.name,
-        id: i,
+        id: lightId,
         type: "checkbox",
         checked: curr.state.on,
-        click() {
-          changeLightState.changeLightState(i, store, tray, on);
+        click(light) {
+          changeLightState(light, store, () =>
+            buildApp(store, tray)
+          );
         }
       });
     }
@@ -57,59 +63,52 @@ const buildApp = async (store, tray) => {
 
     if (lightsOn) {
       tray.setImage(`${imagesDir}/light-on-logo.png`);
+    } else {
+      tray.setImage(`${imagesDir}/light-off-logo.png`)
     }
 
-    const appMenu = Menu.buildFromTemplate([
-      {
-        label: "On",
-        checked: lightsOn,
-        type: "radio",
-        click() {
-          allLights(store, tray, lightsList, true);
-        }
-      },
-      {
-        label: "Off",
-        checked: !lightsOn,
-        type: "radio",
-        click() {
-          allLights(store, tray, lightsList, false);
-        }
-      },
-      {
-        type: "separator"
-      },
-      {
-        label: "Lights",
-        submenu: lightsMenu
-      },
-      {
-        type: "separator"
-      },
-      {
-        label: "Scenes",
-        submenu: scenesMenu
-      },
-      {
-        type: "separator"
-      },
-      {
-        type: "separator"
-      },
-      {
-        label: "Options",
-        submenu: [
-          {
-            label: `Version: ${app.getVersion()}`,
-            enabled: false
-          }
-        ]
-      },
-      {
-        label: "Quit",
-        role: "quit"
+    const appMenu = Menu.buildFromTemplate([{
+      label: "On",
+      checked: lightsOn,
+      type: "radio",
+      click() {
+        allLights(store, lightsList, true, () => {
+          buildApp(store, tray)
+        });
       }
-    ]);
+    }, {
+      label: "Off",
+      checked: !lightsOn,
+      type: "radio",
+      click() {
+        allLights(store, lightsList, false, () => {
+          buildApp(store, tray)
+        });
+      }
+    }, {
+      type: "separator"
+    }, {
+      label: "Lights",
+      submenu: lightsMenu
+    }, {
+      type: "separator"
+    }, {
+      label: "Scenes",
+      submenu: scenesMenu
+    }, {
+      type: "separator"
+    }, {
+      type: "separator"
+    }, {
+      label: "Options",
+      submenu: [{
+        label: `Version: ${app.getVersion()}`,
+        enabled: false
+      }]
+    }, {
+      label: "Quit",
+      role: "quit"
+    }]);
     tray.setContextMenu(appMenu);
 
     console.log("app built!");

@@ -1,20 +1,20 @@
 const fetch = require("node-fetch");
-var updateTray = require("../../utilis/updateTray");
+var Boolify = require('node-boolify').Boolify;
 
-exports.changeLightState = async (id, store, tray, state) => {
+module.exports = async (light, store, reload) => {
   console.log("in POSTlights");
-
   try {
+    // console.log(light);
     const bridgeip = store.get("bridgeip");
     const username = store.get("username");
 
-    const endpoint = `http://${bridgeip}/api/${username}/lights/${id}/state`;
+    const endpoint = `http://${bridgeip}/api/${username}/lights/${light.id}/state`;
     const response = await fetch(endpoint, {
       method: "PUT",
-      body: `{"on": ${!state}}`
+      body: `{"on": ${Boolify(light.checked)}}`
     });
 
-    updateTray.updateTray(store, tray);
+    reload();
   } catch (err) {
     throw new Error(`Error fetching POSTLightState: ${err}`);
   }
