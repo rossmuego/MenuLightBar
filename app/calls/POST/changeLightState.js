@@ -1,31 +1,21 @@
-const fetch = require('node-fetch');
-const {
-    Menu
-} = require('electron');
-var updateTray = require('../../utilis/updateTray')
+const fetch = require("node-fetch");
+var Boolify = require('node-boolify').Boolify;
 
-exports.changeLightState = async (id, store, tray) => {
-    console.log('in POSTlights');
+module.exports = async (light, store, reload) => {
+  console.log("in POSTlights");
+  try {
+    // console.log(light);
+    const bridgeip = store.get("bridgeip");
+    const username = store.get("username");
 
-    try {
+    const endpoint = `http://${bridgeip}/api/${username}/lights/${light.id}/state`;
+    const response = await fetch(endpoint, {
+      method: "PUT",
+      body: `{"on": ${Boolify(light.checked)}}`
+    });
 
-        const bridgeip = store.get('bridgeip')
-        const username = store.get('username')
-        const menu = Menu.getApplicationMenu()
-        const state = menu.items[0].submenu.items[id - 1].checked;
-        menu.items[0].submenu.items[id - 1].checked = !state
-        Menu.setApplicationMenu(menu);
-
-        const endpoint = `http://${bridgeip}/api/${username}/lights/${id}/state`;
-        const response = await fetch(endpoint, {
-            method: 'PUT',
-            body: `{"on":${!state}, "transitiontime":"2"}`,
-        });
-
-        updateTray.updateTray(store, tray);
-
-    } catch (err) {
-        throw new Error(`Error fetching POSTLightState: ${err}`);
-    }
-
+    reload();
+  } catch (err) {
+    throw new Error(`Error fetching POSTLightState: ${err}`);
+  }
 };
