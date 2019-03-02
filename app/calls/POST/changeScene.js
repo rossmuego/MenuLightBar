@@ -1,27 +1,22 @@
-const fetch = require('node-fetch');
-const {
-    Menu
-} = require('electron');
-var updateTray = require('../../utilis/updateTray')
+const fetch = require("node-fetch");
+const { Menu } = require("electron");
+var updateTray = require("../../utilis/updateTray");
 
 exports.changeScene = async (id, store, tray) => {
-    console.log('in POSTScene');
+  console.log("in POSTScene");
 
-    try {
+  try {
+    const bridgeip = store.get("bridgeip");
+    const username = store.get("username");
 
-        const bridgeip = store.get('bridgeip')
-        const username = store.get('username')
+    const endpoint = `http://${bridgeip}/api/${username}/groups/0/action`;
+    const response = await fetch(endpoint, {
+      method: "PUT",
+      body: `{"scene": "${id}"}`
+    });
 
-        const endpoint = `http://${bridgeip}/api/${username}/groups/0/action`;
-        const response = await fetch(endpoint, {
-            method: 'PUT',
-            body: `{"scene": "${id}"}`,
-        });
-
-        updateTray.updateTray(store, tray);
-
-    } catch (err) {
-        throw new Error(`Error fetching POSTLightState: ${err}`);
-    }
-
+    updateTray.updateTray(store, tray);
+  } catch (err) {
+    throw new Error(`Error fetching POSTLightState: ${err}`);
+  }
 };
