@@ -1,14 +1,14 @@
 const {
-  Menu,
-  app
+  Menu
 } = require("electron");
+const path = require("path");
 const Boolify = require('node-boolify').Boolify;
+const imagesDir = path.join(__dirname, "./images");
+
 const getLights = require("./calls/GET/lights");
 const getScenes = require("./calls/GET/scenes");
 const changeLightState = require("./calls/POST/changeLightState");
 const changeScene = require("./calls/POST/changeScene");
-const path = require("path");
-const imagesDir = path.join(__dirname, "./images");
 const allLights = require("./calls/POST/allLightState");
 
 const buildApp = async (store, tray) => {
@@ -16,12 +16,12 @@ const buildApp = async (store, tray) => {
     console.log("in buildApp");
 
     const username = store.get("username");
-    const bridgeip = store.get("bridgeip");
+    const bridgeIp = store.get("bridgeip");
 
-    const lights = await getLights(bridgeip, username);
+    const lights = await getLights(bridgeIp, username);
     const lightsMenu = [];
 
-    const scenes = await getScenes(bridgeip, username);
+    const scenes = await getScenes(bridgeIp, username);
     const scenesMenu = [];
 
     let lightsOn = false;
@@ -56,7 +56,9 @@ const buildApp = async (store, tray) => {
         label: curr.name,
         type: "radio",
         click() {
-          changeScene.changeScene(sceneID, store, tray);
+          changeScene.changeScene(sceneID, store, () => {
+            buildApp(store, tray);
+          });
         }
       });
     }
@@ -66,17 +68,6 @@ const buildApp = async (store, tray) => {
     } else {
       tray.setImage(`${imagesDir}/light-off-logo.png`)
     }
-
-      for (let i = 1; i <= totalScenes; i++) {
-    scenesMenu.push({
-      label: 'hi',
-      type: 'radio',
-      checked: false,
-      click() {
-        changeLightState(i, store, tray);
-      }
-    })
-  }
 
     const appMenu = Menu.buildFromTemplate([{
       label: "On",
@@ -110,12 +101,6 @@ const buildApp = async (store, tray) => {
       type: "separator"
     }, {
       type: "separator"
-    }, {
-      label: "Options",
-      submenu: [{
-        label: `Version: ${app.getVersion()}`,
-        enabled: false
-      }]
     }, {
       label: "Quit",
       role: "quit"

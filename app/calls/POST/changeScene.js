@@ -1,8 +1,6 @@
 const fetch = require("node-fetch");
-const { Menu } = require("electron");
-var updateTray = require("../../utilis/updateTray");
 
-exports.changeScene = async (id, store, tray) => {
+exports.changeScene = async (id, store, refresh) => {
   console.log("in POSTScene");
 
   try {
@@ -15,7 +13,7 @@ exports.changeScene = async (id, store, tray) => {
       body: `{"scene": "${id}"}`
     });
 
-    updateTray.updateTray(store, tray);
+    refresh();
   } catch (err) {
     throw new Error(`Error fetching POSTLightState: ${err}`);
   }

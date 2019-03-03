@@ -1,7 +1,4 @@
 const fetch = require("node-fetch");
-const {
-  Menu
-} = require("electron");
 
 module.exports = async (store, lightsList, state, reload) => {
   console.log("in POSTlights");
