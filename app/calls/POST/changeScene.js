@@ -1,6 +1,6 @@
 const fetch = require("node-fetch");
 
-exports.changeScene = async (id, store, refresh) => {
+module.exports = async (id, store, refresh) => {
   console.log("in POSTScene");
 
   try {

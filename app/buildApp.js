@@ -10,6 +10,7 @@ const getScenes = require("./calls/GET/scenes");
 const changeLightState = require("./calls/POST/changeLightState");
 const changeScene = require("./calls/POST/changeScene");
 const allLights = require("./calls/POST/allLightState");
+const lightColor = require("./calls/POST/lightColor");
 
 const buildApp = async (store, tray) => {
   try {
@@ -56,7 +57,7 @@ const buildApp = async (store, tray) => {
         label: curr.name,
         type: "radio",
         click() {
-          changeScene.changeScene(sceneID, store, () => {
+          changeScene(sceneID, store, () => {
             buildApp(store, tray);
           });
         }
@@ -69,42 +70,77 @@ const buildApp = async (store, tray) => {
       tray.setImage(`${imagesDir}/light-off-logo.png`)
     }
 
+    const colourChoices = [{
+        label: "White",
+        type: "radio",
+        click() {
+          lightColor("white", lightsList, store, () => {
+            buildApp(store, tray);
+          });
+        }
+      },
+      {
+        label: "Red",
+        type: "radio",
+        click() {
+          lightColor("red", lightsList, store, () => {
+            buildApp(store, tray);
+          });
+        }
+      },
+      {
+        label: "Pink",
+        type: "radio",
+        click() {
+          lightColor("pink", lightsList, store, () => {
+            buildApp(store, tray);
+          });
+        }
+      }
+    ]
+
     const appMenu = Menu.buildFromTemplate([{
-      label: "On",
-      checked: lightsOn,
-      type: "radio",
-      click() {
-        allLights(store, lightsList, true, () => {
-          buildApp(store, tray)
-        });
+        label: "On",
+        checked: lightsOn,
+        type: "radio",
+        click() {
+          allLights(store, lightsList, true, () => {
+            buildApp(store, tray)
+          });
+        }
+      }, {
+        label: "Off",
+        checked: !lightsOn,
+        type: "radio",
+        click() {
+          allLights(store, lightsList, false, () => {
+            buildApp(store, tray)
+          });
+        }
+      }, {
+        type: "separator"
+      }, {
+        label: "Lights",
+        submenu: lightsMenu
+      }, {
+        type: "separator"
+      }, {
+        label: "Colors",
+        submenu: colourChoices
+      }, {
+        type: "separator"
+      },
+      {
+        label: "Scenes",
+        submenu: scenesMenu
+      }, {
+        type: "separator"
+      },
+      {
+        label: "Quit",
+        role: "quit"
       }
-    }, {
-      label: "Off",
-      checked: !lightsOn,
-      type: "radio",
-      click() {
-        allLights(store, lightsList, false, () => {
-          buildApp(store, tray)
-        });
-      }
-    }, {
-      type: "separator"
-    }, {
-      label: "Lights",
-      submenu: lightsMenu
-    }, {
-      type: "separator"
-    }, {
-      label: "Scenes",
-      submenu: scenesMenu
-    }, {
-      type: "separator"
-    }, {
-      type: "separator"
-    }, {
-      label: "Quit",
-      role: "quit"
-    }]);
+    ]);
     tray.setContextMenu(appMenu);
 
     console.log("app built!");
